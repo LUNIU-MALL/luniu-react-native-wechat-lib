@@ -26,15 +26,16 @@ function wrapRegisterApp(nativeFunc) {
     return undefined;
   }
   return (...args) => {
-    if (isAppRegistered) {
-      return Promise.resolve(true);
-    }
+    // if (isAppRegistered) {
+    //   return Promise.resolve(true);
+    // }
     isAppRegistered = true;
     return new Promise((resolve, reject) => {
       nativeFunc.apply(null, [
         ...args,
         (error, result) => {
           if (!error) {
+            isAppRegistered = true;
             return resolve(result);
           }
           if (typeof error === 'string') {
